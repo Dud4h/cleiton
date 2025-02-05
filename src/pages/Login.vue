@@ -1,0 +1,88 @@
+<template>
+  <v-app>
+    <v-main>
+      <v-container class="d-flex justify-center align-center h-100 mt-5">
+        <v-card class="v-col-6 pa-5">
+          <v-card-title class="text-center">Fazer Login</v-card-title>
+          <v-card-text>
+            <v-form>
+              <v-alert
+                v-if="hasError"
+                type="error"
+                variant="text"
+                dense
+                class="my-2"
+              >
+                Preencha todos os campos
+              </v-alert>
+
+              <v-text-field
+                label="Email"
+                v-model="email"
+                type="email"
+                required
+              ></v-text-field>
+
+              <v-text-field
+                label="Senha"
+                v-model="password"
+                type="password"
+                required
+              ></v-text-field>
+
+              <v-btn
+                class="mt-4"
+                color="primary"
+                block
+                @click="handleLogin"
+              >
+                Entrar
+              </v-btn>
+            </v-form>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn text @click="navigateToSignup">Criar uma conta</v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-container>
+    </v-main>
+  </v-app>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      email: '',
+      password: '',
+      hasError: false
+    };
+  },
+  methods: {
+    handleLogin() {
+      if (!this.email || !this.password) {
+        this.hasError = true;
+        return;
+      }
+
+      const user = {
+        email: this.email,
+        password: this.password,
+      }
+
+      this.$store.dispatch("auth/authentication", user);
+      this.$router.push('/');
+    },
+    navigateToSignup() {
+      this.$router.push('/register');
+    },
+  },
+};
+</script>
+
+<style>
+.text-center {
+  text-align: center;
+}
+</style>
